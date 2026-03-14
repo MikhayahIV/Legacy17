@@ -2,8 +2,7 @@ package jay.six.CadastroDeUsuarios.activity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jay.six.CadastroDeUsuarios.model.UserModel;
-
+import jay.six.CadastroDeUsuarios.user.model.UserModel;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
