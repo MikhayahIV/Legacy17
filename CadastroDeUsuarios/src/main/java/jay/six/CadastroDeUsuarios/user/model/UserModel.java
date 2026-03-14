@@ -1,4 +1,4 @@
-package jay.six.CadastroDeUsuarios.model;
+package jay.six.CadastroDeUsuarios.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -27,6 +27,7 @@ public class UserModel {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String phone;
 
     private String photo;
@@ -37,6 +38,9 @@ public class UserModel {
     @ManyToMany(mappedBy = "users")
     @JsonIgnoreProperties("users")
     private Set<ActivityModel> activity = new HashSet<>();
+
+    @Column(nullable = false)
+    private boolean enable = false;
 
     public UserModel() {
     }
@@ -112,6 +116,14 @@ public class UserModel {
 
     public void setActivity(Set<ActivityModel> activity) {
         this.activity = activity;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
     public int getAge(){
