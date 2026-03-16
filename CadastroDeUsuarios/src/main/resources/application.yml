@@ -1,1 +1,17 @@
-spring.application.name=CadastroDeUsuarios
+spring:
+  application:
+    name: legacy17
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          formate_sql: true

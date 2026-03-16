@@ -1,11 +1,13 @@
 package jay.six.CadastroDeUsuarios.user.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jay.six.CadastroDeUsuarios.activity.model.ActivityModel;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -33,6 +35,7 @@ public class UserModel {
     private String photo;
 
     @Column(name = "birth_date",nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
     @ManyToMany(mappedBy = "users")
@@ -131,4 +134,81 @@ public class UserModel {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
+    private UserModel(Builder builder){
+        this.uuid = builder.uuid;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.phone = builder.phone;
+        this.photo = builder.photo;
+        this.birthDate = builder.birthdate;
+        this.activity = builder.activity;
+        this.enable = builder.enable;
+    }
+
+    public static class  Builder{
+
+        private UUID uuid;
+        private String name;
+        private String email;
+        private String password;
+        private String phone;
+        private String photo;
+        private LocalDate birthdate;
+        private Set<ActivityModel> activity = new HashSet<>();
+        private boolean enable = false;
+
+        public Builder uuid(UUID uuid){
+            this.uuid = uuid;
+            return this;
+        }
+
+        public Builder name(String name){
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email){
+            this.email = email;
+            return this;
+        }
+        public Builder password(String password){
+            this.password = password;
+            return this;
+        }
+
+        public Builder phone(String phone){
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder photo(String photo){
+            this.photo = photo;
+            return this;
+        }
+
+        public Builder birthdate(LocalDate birthdate){
+            this.birthdate = birthdate;
+            return this;
+        }
+
+        public Builder activity(Set<ActivityModel> activity){
+            this.activity = activity;
+            return this;
+        }
+
+        public Builder enable(boolean enable){
+            this.enable = enable;
+            return this;
+        }
+
+        public UserModel build(){
+            return new UserModel(this);
+        }
+
+    }
+
+    public static Builder builder(){
+        return new Builder();
+    }
 }

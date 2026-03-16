@@ -30,6 +30,7 @@ public class UserService {
     }
 
     public UserResponseDTO findById(UUID uuid) {
+
         return repository.findById(uuid)
                 .map(mapper::toResponse)
                 .orElseThrow(()-> new RuntimeException("Usuario não encontrado."));
