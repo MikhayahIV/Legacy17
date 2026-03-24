@@ -6,6 +6,7 @@ import jay.six.CadastroDeUsuarios.user.dto.UserRequestDTO;
 import jay.six.CadastroDeUsuarios.user.mapper.UserMapper;
 import jay.six.CadastroDeUsuarios.user.model.UserModel;
 import jay.six.CadastroDeUsuarios.user.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -16,21 +17,25 @@ public class UserService {
 
     private final UserRepository repository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository, UserMapper mapper) {
+
+    public UserService(UserRepository repository, UserMapper mapper, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.mapper = mapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public UserResponseDTO create(UserRequestDTO dto){
         UserModel user = mapper.toEntity(dto);
+        String passwordHash = passwordEncoder.encode(dto.password());
+        user.setPassword(passwordHash);
         UserModel saved = repository.save(user);
         return mapper.toResponse(saved);
     }
 
     public UserResponseDTO findById(UUID uuid) {
-
         return repository.findById(uuid)
                 .map(mapper::toResponse)
                 .orElseThrow(()-> new RuntimeException("Usuario não encontrado."));
