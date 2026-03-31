@@ -1,6 +1,7 @@
 package jay.six.CadastroDeUsuarios.user.controller;
 
 import jakarta.validation.Valid;
+import jay.six.CadastroDeUsuarios.user.dto.UserMinDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserResponseDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserRequestDTO;
 import jay.six.CadastroDeUsuarios.user.mapper.UserMapper;
@@ -16,11 +17,9 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService service;
-    private final UserMapper mapper;
 
-    public UserController(UserService service, UserMapper mapper) {
+    public UserController(UserService service) {
         this.service = service;
-        this.mapper = mapper;
     }
 
     @PostMapping
@@ -30,8 +29,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> allUsers(){
-        return ResponseEntity.ok(service.usersList());
+    public ResponseEntity<?> listUsers(@RequestParam(required = false, defaultValue = "false") boolean simple) {
+        if (simple) {
+            List<UserMinDTO> usersMin = service.findAllMin();
+            return ResponseEntity.ok(usersMin);
+        }
+        List<UserResponseDTO> usersFull = service.usersList();
+        return ResponseEntity.ok(usersFull);
     }
 
     @GetMapping("/{id}")

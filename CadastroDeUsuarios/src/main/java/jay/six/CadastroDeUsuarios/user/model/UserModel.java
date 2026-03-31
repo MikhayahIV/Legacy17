@@ -38,7 +38,7 @@ public class UserModel {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "users",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnoreProperties("users")
     private Set<ActivityModel> activity = new HashSet<>();
 

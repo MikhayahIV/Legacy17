@@ -1,6 +1,9 @@
 package jay.six.CadastroDeUsuarios.user.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
+import jay.six.CadastroDeUsuarios.activity.model.ActivityModel;
+import jay.six.CadastroDeUsuarios.user.dto.UserMinDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserResponseDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserRequestDTO;
 import jay.six.CadastroDeUsuarios.user.mapper.UserMapper;
@@ -9,8 +12,11 @@ import jay.six.CadastroDeUsuarios.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -48,6 +54,12 @@ public class UserService {
                 .toList();
     }
 
+    public List<UserMinDTO> findAllMin() {
+        return repository.findAll().stream()
+                .map(mapper::toMinDTO)
+                .collect(Collectors.toList());
+    }
+
    @Transactional
     public UserResponseDTO attUser(UUID uuid, UserRequestDTO user){
         UserModel userExist = repository.findById(uuid)
@@ -64,9 +76,11 @@ public class UserService {
 
    @Transactional
     public void delete(UUID uuid){
-        if(!repository.existsById(uuid)){
-            throw  new RuntimeException("Não é possivel deletar: usuario não encontrado");
-        }
+       UserModel user = repository.findById(uuid)
+               .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+       for (ActivityModel activity : new HashSet<>(user.getActivity())) {
+           activity.getUsers().remove(user);
+       }
         repository.deleteById(uuid);
     }
 }

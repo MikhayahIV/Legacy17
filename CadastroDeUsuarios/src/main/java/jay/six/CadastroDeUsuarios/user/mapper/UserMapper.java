@@ -1,5 +1,6 @@
 package jay.six.CadastroDeUsuarios.user.mapper;
 
+import jay.six.CadastroDeUsuarios.user.dto.UserMinDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserRequestDTO;
 import jay.six.CadastroDeUsuarios.user.dto.UserResponseDTO;
 import jay.six.CadastroDeUsuarios.user.model.UserModel;
@@ -27,5 +28,14 @@ public class UserMapper {
         if(model == null)
             return null;
         return new UserResponseDTO(model.getUuid(),model.getName(), model.getEmail(),model.getPhone(), model.getPhoto(), model.getBirthDate(), model.isEnable());
+    }
+
+    public UserMinDTO toMinDTO(UserModel user) {
+        if (user == null) return null;
+        return new UserMinDTO(
+                user.getUuid(),
+                user.getName(),
+                user.getPhoto()
+        );
     }
 }
