@@ -1,6 +1,6 @@
-# Legacy17 - User Management Ecosystem
+# j17 - User Management Ecosystem
 
-O **Legacy17** é uma API RESTful robusta desenvolvida com **Java 17** e **Spring Boot 3**, focada na gestão segura de usuários e integração de atividades. O projeto utiliza containers para garantir um ambiente de desenvolvimento padronizado e persistência resiliente.
+O **j17** é uma API RESTful robusta desenvolvida com **Java 17** e **Spring Boot 3**, focada na gestão segura de usuários e integração de atividades. O projeto utiliza containers para garantir um ambiente de desenvolvimento padronizado e persistência resiliente.
 
 ## 🚀 Diferenciais Técnicos
 * **Segurança:** Implementação de **Spring Security** com hashing de senhas via **BCrypt**.
